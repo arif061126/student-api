@@ -42,4 +42,14 @@ public class StudentService {
         System.out.println(student);
         this.studentRepository.save(student);
     }
+
+    public void deleteStudent(Integer studentId) {
+        boolean exists = this.studentRepository.existsById(studentId);
+
+        if(!exists){
+            throw new IllegalStateException("Student with ID: "+studentId+" does not exist");
+        }
+
+        this.studentRepository.deleteById(studentId);
+    }
 }

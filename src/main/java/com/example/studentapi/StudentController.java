@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * step 2: create student controller class
@@ -60,6 +61,21 @@ public class StudentController {
     @DeleteMapping(path="{studentId}")
     public void deleteStudent(@PathVariable("studentId") Integer studentId){
         studentService.deleteStudent(studentId);
+    }
+
+    //update student by student id
+    @PutMapping(path="/update-student/{studentId}")
+    public Student updateStudentById(
+            @PathVariable("studentId") Integer studentId,
+            @RequestBody Student studentDetails){
+
+        return studentService.updateStudent(studentId,studentDetails);
+    }
+
+    //get student by id
+    @GetMapping(path="{studentId}")
+    public Optional<Student> getStudentById(@PathVariable("studentId") Integer studentId){
+        return studentService.getStudentById(studentId);
     }
 
 }

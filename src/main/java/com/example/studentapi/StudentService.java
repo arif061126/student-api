@@ -3,6 +3,7 @@ package com.example.studentapi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -51,5 +52,26 @@ public class StudentService {
         }
 
         this.studentRepository.deleteById(studentId);
+    }
+
+    public Student updateStudent(Integer studentId, Student studentDetails){
+        Student student = this.studentRepository.findById(studentId).orElseThrow(
+                () -> new NoSuchElementException("Student with ID: " + studentId + " does not exist")
+        );
+        student.setStudentName(studentDetails.getStudentName());
+        student.setStudentEmail(studentDetails.getStudentEmail());
+        student.setStudentDateOfBirth(studentDetails.getStudentDateOfBirth());
+
+        return this.studentRepository.save(student);
+    }
+
+    public Optional<Student> getStudentById(Integer studentId){
+        boolean exists = this.studentRepository.existsById(studentId);
+
+        if(!exists){
+            throw new IllegalStateException("Student with ID: "+studentId+" does not exist");
+        }
+        return this.studentRepository.findById(studentId);
+
     }
 }
